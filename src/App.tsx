@@ -1,7 +1,7 @@
 function App() {
   return (
-    <div>
-      <h1>Asterism ✨</h1>
+    <div className="min-h-screen">
+      <h1 className="font-bold text-2xl">Asterism ✨</h1>
       <p>Bookmark Manager</p>
     </div>
   );
