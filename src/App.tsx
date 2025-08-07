@@ -1,3 +1,5 @@
+import { SearchIcon } from 'lucide-react';
+import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
 
 function App() {
@@ -8,9 +10,9 @@ function App() {
       </header>
 
       <div>
-        <main className="container mx-auto px-4 py-8 text-center">
-          <div className="p-3 border mx-auto rounded-full inline-flex mb-4">
-            <p className="text-sm font-semibold">Version 1.0.b</p>
+        <main className="px-4 py-8 container mx-auto text-center">
+          <div className="px-3 py-1 border mx-auto rounded-full inline-flex mb-4">
+            <p className="text-sm font-medium">Version 1.0.b</p>
           </div>
           <h1 className="mx-auto text-6xl">
             Capture the stars of the web. Organize them into your own galaxy.
@@ -18,8 +20,14 @@ function App() {
         </main>
       </div>
 
-      <div className="container mx-auto">
-        <Input placeholder="Search favorites..." />
+      <div className="px-4 py-8 container mx-auto">
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <div className="relative flex-1/2">
+            <SearchIcon className="h-4 w-4 absolute left-3 inset-y-0 my-auto text-muted-foreground" />
+            <Input className="pl-10" placeholder="Search favorites..." />
+          </div>
+          <Button>Save favorite</Button>
+        </div>
       </div>
     </div>
   );
