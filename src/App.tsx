@@ -1,3 +1,5 @@
+import { Input } from './components/ui/input';
+
 function App() {
   return (
     <div className="min-h-screen">
@@ -16,7 +18,9 @@ function App() {
         </main>
       </div>
 
-      <div></div>
+      <div className="container mx-auto">
+        <Input placeholder="Search favorites..." />
+      </div>
     </div>
   );
 }
