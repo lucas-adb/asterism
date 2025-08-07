@@ -4,6 +4,7 @@ function App() {
       <header className="px-4 py-8 container mx-auto">
         <h1 className="font-bold text-2xl cursor-pointer">✨ Asterism</h1>
       </header>
+
       <div>
         <main className="container mx-auto px-4 py-8 text-center">
           <div className="p-3 border mx-auto rounded-full inline-flex mb-4">
@@ -14,6 +15,8 @@ function App() {
           </h1>
         </main>
       </div>
+
+      <div></div>
     </div>
   );
 }
