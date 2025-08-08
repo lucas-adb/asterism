@@ -11,21 +11,12 @@ import {
 } from '@/components/ui/card';
 
 import { Button } from '@/components/ui/button';
-
-interface Favorite {
-  id: string;
-  title: string;
-  url: string;
-  description: string;
-  type: string;
-  tags: string[];
-  createdAt: Date;
-}
+import type { Favorite } from '@/types/favorite';
 
 export function FavoriteCard({ favorite }: { favorite: Favorite }) {
   return (
     <Card
-      key={favorite.id}
+      id={favorite.id}
       className="hover:shadow-foreground/20 transition-all duration-300 hover:scale-[1.02] animate-scale-in"
     >
       <CardHeader>
