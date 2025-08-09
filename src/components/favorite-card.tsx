@@ -72,8 +72,10 @@ export function FavoriteCard({
           <p className="text-sm text-muted-foreground">
             {favorite.createdAt.toLocaleDateString()}
           </p>
-          <Button className="cursor-pointer">
-            <RocketLaunchIcon size={16} /> Visit
+          <Button className="cursor-pointer" asChild>
+            <a href={favorite.url} target="_blank">
+              <RocketLaunchIcon size={16} /> Visit
+            </a>
           </Button>
         </div>
       </CardFooter>
