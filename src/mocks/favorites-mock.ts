@@ -1,4 +1,6 @@
-export const favoritesMock = [
+import type { Favorite } from '@/types/favorite';
+
+export const favoritesMock: Favorite[] = [
   {
     id: '1',
     title: 'Aeon',

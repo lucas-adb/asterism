@@ -33,7 +33,7 @@ export function AddFavoriteDialog({ onAdd }: AddFavoriteDialogProps) {
     title: z.string().min(2).max(50),
     url: z.url(),
     description: z.string().min(2).max(250),
-    type: z.string().min(2),
+    type: z.enum(['articles', 'inspiration', 'sites', 'tutorials']),
     tags: z.array(z.string().min(1)).min(1),
   });
 
@@ -43,7 +43,7 @@ export function AddFavoriteDialog({ onAdd }: AddFavoriteDialogProps) {
       title: '',
       url: '',
       description: '',
-      type: '',
+      type: 'sites',
       tags: [],
     },
   });

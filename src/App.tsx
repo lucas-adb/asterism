@@ -22,6 +22,16 @@ function App() {
     setFavorites((prev) => [favorite, ...prev]);
   };
 
+  const deleteFavorite = (newFavoriteId: string) => {
+    const favorite = favorites.find((f) => f.id === newFavoriteId);
+
+    if (!favorite) {
+      return;
+    }
+
+    setFavorites((prev) => prev.filter((f) => f.id !== favorite.id));
+  };
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -41,7 +51,13 @@ function App() {
       {favorites.length > 0 ? (
         <div className="px-4 py-8 container mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid gap-4 auto-rows-fr">
           {favorites.map((favorite) => {
-            return <FavoriteCard favorite={favorite} key={favorite.id} />;
+            return (
+              <FavoriteCard
+                key={favorite.id}
+                favorite={favorite}
+                onDelete={deleteFavorite}
+              />
+            );
           })}
         </div>
       ) : (

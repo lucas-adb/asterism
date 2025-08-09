@@ -3,7 +3,9 @@ export interface Favorite {
   title: string;
   url: string;
   description: string;
-  type: string;
+  type: FavoriteType;
   tags: string[];
   createdAt: Date;
 }
+
+type FavoriteType = 'articles' | 'inspiration' | 'sites' | 'tutorials';

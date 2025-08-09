@@ -13,7 +13,13 @@ import {
 import { Button } from '@/components/ui/button';
 import type { Favorite } from '@/types/favorite';
 
-export function FavoriteCard({ favorite }: { favorite: Favorite }) {
+export function FavoriteCard({
+  favorite,
+  onDelete,
+}: {
+  favorite: Favorite;
+  onDelete: (id: string) => void;
+}) {
   return (
     <Card
       id={favorite.id}
@@ -41,6 +47,7 @@ export function FavoriteCard({ favorite }: { favorite: Favorite }) {
             size={'icon'}
             variant={'ghost'}
             className="h-4 w-4 cursor-pointer"
+            onClick={() => onDelete(favorite.id)}
           >
             <TrashIcon size={16} />
           </Button>
