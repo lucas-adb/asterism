@@ -23,6 +23,14 @@ import { Input } from './ui/input';
 import { useState } from 'react';
 import { PenIcon } from '@phosphor-icons/react';
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 interface EditFavoriteDialogProps {
   onEdit: (favorite: Omit<Favorite, 'createdAt'>) => void;
   favorite: Favorite;
@@ -62,8 +70,16 @@ export function EditFavoriteDialog({
     form.reset();
   }
 
+  function handleOnOpenChange(isOpen: boolean) {
+    setOpen(isOpen);
+
+    if (!isOpen) {
+      form.reset();
+    }
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOnOpenChange}>
       <DialogTrigger asChild>
         <Button
           size={'icon'}
@@ -133,9 +149,22 @@ export function EditFavoriteDialog({
               render={({ field }) => (
                 <FormItem className="mb-2">
                   <FormLabel>Type</FormLabel>
-                  <FormControl>
-                    <Input placeholder="write the type here..." {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="sites">Sites</SelectItem>
+                      <SelectItem value="tutorials">Tutorials</SelectItem>
+                      <SelectItem value="articles">Articles</SelectItem>
+                      <SelectItem value="inspiration">Inspiration</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

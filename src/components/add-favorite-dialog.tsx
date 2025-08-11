@@ -21,6 +21,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from './ui/input';
 import { useState } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface AddFavoriteDialogProps {
   onAdd: (favorite: Omit<Favorite, 'id' | 'createdAt'>) => void;
@@ -55,8 +62,16 @@ export function AddFavoriteDialog({ onAdd }: AddFavoriteDialogProps) {
     form.reset();
   }
 
+  function handleOnOpenChange(isOpen: boolean) {
+    setOpen(isOpen);
+
+    if (!isOpen) {
+      form.reset();
+    }
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOnOpenChange}>
       <DialogTrigger asChild>
         <Button className="cursor-pointer">Save favorite</Button>
       </DialogTrigger>
@@ -120,9 +135,22 @@ export function AddFavoriteDialog({ onAdd }: AddFavoriteDialogProps) {
               render={({ field }) => (
                 <FormItem className="mb-2">
                   <FormLabel>Type</FormLabel>
-                  <FormControl>
-                    <Input placeholder="write the type here..." {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="sites">Sites</SelectItem>
+                      <SelectItem value="tutorials">Tutorials</SelectItem>
+                      <SelectItem value="articles">Articles</SelectItem>
+                      <SelectItem value="inspiration">Inspiration</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
