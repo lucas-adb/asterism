@@ -31,7 +31,17 @@ export function AddFavorite({ onAdd }: AddFavoriteProps) {
 
   const formSchema = z.object({
     title: z.string().min(2).max(50),
-    url: z.url(),
+    url: z
+      .string()
+      .min(1)
+      .transform((value) => {
+        const trimmed = value.trim();
+        if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+          return trimmed;
+        }
+        return `https://${trimmed}`;
+      })
+      .pipe(z.url()),
     description: z.string().min(2).max(250),
     type: z.enum(['articles', 'inspiration', 'sites', 'tutorials']),
     tags: z.array(z.string().min(1)).min(1),
@@ -49,7 +59,6 @@ export function AddFavorite({ onAdd }: AddFavoriteProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     onAdd(values);
     setOpen(false);
     form.reset();
