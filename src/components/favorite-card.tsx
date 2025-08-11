@@ -12,7 +12,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import type { Favorite } from '@/types/favorite';
-import { EditFavoriteDialog } from './edit-favorite-dialog';
+import { EditFavorite } from './edit-favorite';
 
 export function FavoriteCard({
   favorite,
@@ -39,7 +39,7 @@ export function FavoriteCard({
           {favorite.description}
         </CardDescription>
         <CardAction className="flex gap-2">
-          <EditFavoriteDialog onEdit={onEdit} favorite={favorite} />
+          <EditFavorite onEdit={onEdit} favorite={favorite} />
           <Button
             size={'icon'}
             variant={'ghost'}

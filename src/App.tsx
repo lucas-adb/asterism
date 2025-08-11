@@ -7,7 +7,7 @@ import { favoritesMock } from './mocks/favorites-mock';
 import { useState } from 'react';
 import { FavoriteCard } from './components/favorite-card';
 import type { Favorite } from './types/favorite';
-import { AddFavoriteDialog } from './components/add-favorite-dialog';
+import { AddFavorite } from './components/add-favorite';
 
 function App() {
   const [favorites, setFavorites] = useState(favoritesMock);
@@ -56,7 +56,7 @@ function App() {
             <MagnifyingGlassIcon className="h-4 w-4 absolute left-3 inset-y-0 my-auto text-muted-foreground" />
             <Input className="pl-10" placeholder="Search favorites..." />
           </div>
-          <AddFavoriteDialog onAdd={addFavorite} />
+          <AddFavorite onAdd={addFavorite} />
         </div>
       </div>
 
