@@ -1,4 +1,4 @@
-import { PenIcon, RocketLaunchIcon, TrashIcon } from '@phosphor-icons/react';
+import { RocketLaunchIcon, TrashIcon } from '@phosphor-icons/react';
 
 import {
   Card,
@@ -12,13 +12,16 @@ import {
 
 import { Button } from '@/components/ui/button';
 import type { Favorite } from '@/types/favorite';
+import { EditFavoriteDialog } from './edit-favorite-dialog';
 
 export function FavoriteCard({
   favorite,
   onDelete,
+  onEdit,
 }: {
   favorite: Favorite;
   onDelete: (id: string) => void;
+  onEdit: (favorite: Omit<Favorite, 'createdAt'>) => void;
 }) {
   return (
     <Card
@@ -36,13 +39,7 @@ export function FavoriteCard({
           {favorite.description}
         </CardDescription>
         <CardAction className="flex gap-2">
-          <Button
-            size={'icon'}
-            variant={'link'}
-            className="h-4 w-4 cursor-pointer"
-          >
-            <PenIcon size={16} />
-          </Button>
+          <EditFavoriteDialog onEdit={onEdit} favorite={favorite} />
           <Button
             size={'icon'}
             variant={'ghost'}

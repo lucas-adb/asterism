@@ -32,6 +32,18 @@ function App() {
     setFavorites((prev) => prev.filter((f) => f.id !== favorite.id));
   };
 
+  const editFavorite = (newFavorite: Omit<Favorite, 'createdAt'>) => {
+    const newFavorites = favorites.map((f) => {
+      if (f.id === newFavorite.id) {
+        f = { ...f, ...newFavorite };
+      }
+
+      return f;
+    });
+
+    setFavorites(newFavorites);
+  };
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -56,6 +68,7 @@ function App() {
                 key={favorite.id}
                 favorite={favorite}
                 onDelete={deleteFavorite}
+                onEdit={editFavorite}
               />
             );
           })}
