@@ -4,13 +4,14 @@ import { NoFavoritesFound } from './components/no-favorites-found';
 import { Input } from './components/ui/input';
 import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 import { favoritesMock } from './mocks/favorites-mock';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FavoriteCard } from './components/favorite-card';
 import type { Favorite } from './types/favorite';
 import { AddFavorite } from './components/add-favorite';
 
 function App() {
   const [favorites, setFavorites] = useState(favoritesMock);
+  const [query, setQuery] = useState('');
 
   const addFavorite = (newFavorite: Omit<Favorite, 'id' | 'createdAt'>) => {
     const favorite: Favorite = {
@@ -44,6 +45,21 @@ function App() {
     setFavorites(newFavorites);
   };
 
+  const filteredFavorites = useMemo(() => {
+    console.log(query);
+
+    if (query.length < 3) {
+      return favorites;
+    }
+
+    return favorites.filter(
+      (f) =>
+        f.title.toLowerCase().includes(query.toLowerCase()) ||
+        f.description.toLowerCase().includes(query.toLowerCase()) ||
+        f.tags.some((t) => t.toLowerCase().includes(query.toLowerCase()))
+    );
+  }, [favorites, query]);
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -54,15 +70,20 @@ function App() {
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="relative flex-1/2">
             <MagnifyingGlassIcon className="h-4 w-4 absolute left-3 inset-y-0 my-auto text-muted-foreground" />
-            <Input className="pl-10" placeholder="Search favorites..." />
+            <Input
+              className="pl-10"
+              placeholder="Search favorites..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
           </div>
           <AddFavorite onAdd={addFavorite} />
         </div>
       </div>
 
-      {favorites.length > 0 ? (
+      {filteredFavorites.length > 0 ? (
         <div className="px-4 py-8 container mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid gap-4 auto-rows-fr">
-          {favorites.map((favorite) => {
+          {filteredFavorites.map((favorite) => {
             return (
               <FavoriteCard
                 key={favorite.id}
