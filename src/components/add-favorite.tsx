@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { DialogWrapper } from './dialog-wrapper';
+import { Textarea } from './ui/textarea';
 
 interface AddFavoriteProps {
   onAdd: (favorite: Omit<Favorite, 'id' | 'createdAt'>) => void;
@@ -42,7 +43,7 @@ export function AddFavorite({ onAdd }: AddFavoriteProps) {
         return `https://${trimmed}`;
       })
       .pipe(z.url()),
-    description: z.string().min(2).max(250),
+    description: z.string().min(2).max(120),
     type: z.enum(['articles', 'inspiration', 'sites', 'tutorials']),
     tags: z.array(z.string().min(1)).min(1),
   });
@@ -116,8 +117,9 @@ export function AddFavorite({ onAdd }: AddFavoriteProps) {
               <FormItem className="mb-2">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     placeholder="write the description here..."
+                    maxLength={120}
                     {...field}
                   />
                 </FormControl>

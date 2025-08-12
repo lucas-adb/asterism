@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { DialogWrapper } from './dialog-wrapper';
+import { Textarea } from './ui/textarea';
 
 interface EditFavoriteProps {
   onEdit: (favorite: Omit<Favorite, 'createdAt'>) => void;
@@ -34,8 +35,18 @@ export function EditFavorite({ onEdit, favorite }: EditFavoriteProps) {
 
   const formSchema = z.object({
     title: z.string().min(2).max(50),
-    url: z.url(),
-    description: z.string().min(2).max(250),
+    url: z
+      .string()
+      .min(1)
+      .transform((value) => {
+        const trimmed = value.trim();
+        if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+          return trimmed;
+        }
+        return `https://${trimmed}`;
+      })
+      .pipe(z.url()),
+    description: z.string().min(2).max(120),
     type: z.enum(['articles', 'inspiration', 'sites', 'tutorials']),
     tags: z.array(z.string().min(1)).min(1),
   });
@@ -120,8 +131,9 @@ export function EditFavorite({ onEdit, favorite }: EditFavoriteProps) {
               <FormItem className="mb-2">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     placeholder="write the description here..."
+                    maxLength={120}
                     {...field}
                   />
                 </FormControl>
