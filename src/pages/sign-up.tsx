@@ -18,14 +18,16 @@ import { Button } from '@/components/ui/button';
 import { NavLink } from 'react-router';
 
 const formSchema = z.object({
+  username: z.string().min(2).max(20),
   email: z.email().min(2).max(50),
   password: z.string().min(2).max(50),
 });
 
-export function LoginPage() {
+export function SignUpPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      username: '',
       email: '',
       password: '',
     },
@@ -44,15 +46,15 @@ export function LoginPage() {
             <div className="flex flex-col gap-4 w-full max-w-[250px] sm:max-w-[350px] px-2 sm:px-0">
               <div className="flex flex-col">
                 <h1 className="font-bold text-2xl cursor-pointer mb-4">✨</h1>
-                <h2 className="font-bold text-2xl">Sign in</h2>
+                <h2 className="font-bold text-2xl">Sign Up</h2>
                 <p className="text-muted-foreground text-sm">
-                  Not a member?{' '}
+                  Already a member?{' '}
                   {
                     <NavLink
                       className="font-semibold text-foreground"
-                      to={'/signup'}
+                      to={'/login'}
                     >
-                      sign up
+                      sign in
                     </NavLink>
                   }
                 </p>
@@ -62,6 +64,19 @@ export function LoginPage() {
                   onSubmit={form.handleSubmit(handleSubmit)}
                   className="flex flex-col gap-4 w-full"
                 >
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem className="mb-2">
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Et Valdo" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
                     control={form.control}
                     name="email"
@@ -98,7 +113,7 @@ export function LoginPage() {
                   />
                   <div className="flex justify-end mt-2">
                     <Button type="submit" className="w-full">
-                      Sign In
+                      Sign Up
                     </Button>
                   </div>
                 </form>
