@@ -6,11 +6,21 @@ import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 import { favoritesMock } from './mocks/favorites-mock';
 import { useMemo, useState } from 'react';
 import { FavoriteCard } from './components/favorite-card';
-import type { Favorite } from './types/favorite';
+import type { Favorite, FavoriteType } from './types/favorite';
 import { AddFavorite } from './components/add-favorite';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+} from './components/ui/select';
+import { SelectValue } from '@radix-ui/react-select';
 
 function App() {
   const [favorites, setFavorites] = useState(favoritesMock);
+  const [type, setType] = useState<FavoriteType | 'all'>('all');
   const [query, setQuery] = useState('');
 
   const addFavorite = (newFavorite: Omit<Favorite, 'id' | 'createdAt'>) => {
@@ -46,19 +56,23 @@ function App() {
   };
 
   const filteredFavorites = useMemo(() => {
-    console.log(query);
+    let result = favorites;
 
-    if (query.length < 3) {
-      return favorites;
+    if (query.length >= 3) {
+      result = result.filter(
+        (f) =>
+          f.title.toLowerCase().includes(query.toLowerCase()) ||
+          f.description.toLowerCase().includes(query.toLowerCase()) ||
+          f.tags.some((t) => t.toLowerCase().includes(query.toLowerCase()))
+      );
     }
 
-    return favorites.filter(
-      (f) =>
-        f.title.toLowerCase().includes(query.toLowerCase()) ||
-        f.description.toLowerCase().includes(query.toLowerCase()) ||
-        f.tags.some((t) => t.toLowerCase().includes(query.toLowerCase()))
-    );
-  }, [favorites, query]);
+    if (type !== 'all') {
+      result = result.filter((f) => f.type === type);
+    }
+
+    return result;
+  }, [favorites, query, type]);
 
   return (
     <div className="min-h-screen">
@@ -67,7 +81,7 @@ function App() {
       <Hero />
 
       <div className="px-4 py-8 container mx-auto">
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row gap-2 mb-8">
           <div className="relative flex-1/2">
             <MagnifyingGlassIcon className="h-4 w-4 absolute left-3 inset-y-0 my-auto text-muted-foreground" />
             <Input
@@ -78,6 +92,25 @@ function App() {
             />
           </div>
           <AddFavorite onAdd={addFavorite} />
+          <Select
+            onValueChange={(value) => setType(value as FavoriteType | 'all')}
+            value={type}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Filter by type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Type</SelectLabel>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="sites">Sites</SelectItem>
+                <SelectItem value="articles">Articles</SelectItem>
+                <SelectItem value="inspiration">Inspiration</SelectItem>
+                <SelectItem value="tutorials">Tutorials</SelectItem>
+                <SelectItem value="tools">Tools</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

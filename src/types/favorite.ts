@@ -8,4 +8,9 @@ export interface Favorite {
   createdAt: Date;
 }
 
-type FavoriteType = 'articles' | 'inspiration' | 'sites' | 'tutorials';
+export type FavoriteType =
+  | 'articles'
+  | 'inspiration'
+  | 'sites'
+  | 'tutorials'
+  | 'tools';

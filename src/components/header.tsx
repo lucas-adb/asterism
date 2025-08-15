@@ -4,7 +4,7 @@ export function Header() {
   return (
     <header className="px-4 py-8 container mx-auto flex justify-between items-center">
       <h1 className="font-bold text-2xl cursor-pointer">✨ Asterism</h1>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-2 items-center">
         <img
           className="w-10 h-10 rounded-full"
           src={etHead}

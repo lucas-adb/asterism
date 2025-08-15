@@ -29,4 +29,14 @@ export const favoritesMock: Favorite[] = [
     tags: ['arts'],
     createdAt: new Date('2025-01-10'),
   },
+  {
+    id: '4',
+    title: 'The Pudding',
+    url: 'https://pudding.cool/',
+    description:
+      'The Pudding is a digital publication that explains ideas debated in culture with visual essays',
+    type: 'sites',
+    tags: ['graphs', 'culture'],
+    createdAt: new Date('2025-01-10'),
+  },
 ];

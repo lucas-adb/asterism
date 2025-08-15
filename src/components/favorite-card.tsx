@@ -29,7 +29,7 @@ export function FavoriteCard({
       className="hover:shadow-foreground/20 transition-all duration-300 hover:scale-[1.02] animate-scale-in"
     >
       <CardHeader>
-        <CardTitle className="line-clamp-2" title={favorite.title}>
+        <CardTitle className="line-clamp-2 pb-0.5" title={favorite.title}>
           {favorite.title}
         </CardTitle>
         <CardDescription
