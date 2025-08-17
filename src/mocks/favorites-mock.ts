@@ -25,7 +25,7 @@ export const favoritesMock: Favorite[] = [
     title: "Qu's sketchbook",
     url: 'https://www.instagram.com/qu.sketch/',
     description: 'Art inspiration',
-    type: 'inspiration',
+    type: 'inspirations',
     tags: ['arts'],
     createdAt: new Date('2025-01-10'),
   },

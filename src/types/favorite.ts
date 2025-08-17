@@ -10,7 +10,7 @@ export interface Favorite {
 
 export type FavoriteType =
   | 'articles'
-  | 'inspiration'
+  | 'inspirations'
   | 'sites'
   | 'tutorials'
   | 'tools';

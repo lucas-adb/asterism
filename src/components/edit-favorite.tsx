@@ -31,7 +31,7 @@ export function EditFavorite({ onEdit, favorite }: EditFavoriteProps) {
       })
       .pipe(z.url()),
     description: z.string().min(2).max(120),
-    type: z.enum(['articles', 'inspiration', 'sites', 'tutorials']),
+    type: z.enum(['articles', 'inspirations', 'sites', 'tutorials', 'tools']),
     tags: z.array(z.string().min(1)).min(1),
   });
 
