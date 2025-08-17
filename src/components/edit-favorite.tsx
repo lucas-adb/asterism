@@ -1,13 +1,14 @@
 import type { Favorite } from '@/types/favorite';
 import { Button } from './ui/button';
-import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { PenIcon } from '@phosphor-icons/react';
 
 import { DialogWrapper } from './dialog-wrapper';
-import { FavoriteForm, type FavoriteFormData } from './favorite-form';
+import { FavoriteForm } from './favorite-form';
+import type { FavoriteFormData } from '@/schemas/favorite-form-schema';
+import { favoriteFormSchema } from '@/schemas/favorite-form-schema';
 
 interface EditFavoriteProps {
   onEdit: (favorite: Omit<Favorite, 'createdAt'>) => void;
@@ -17,26 +18,8 @@ interface EditFavoriteProps {
 export function EditFavorite({ onEdit, favorite }: EditFavoriteProps) {
   const [open, setOpen] = useState(false);
 
-  const formSchema = z.object({
-    title: z.string().min(2).max(50),
-    url: z
-      .string()
-      .min(1)
-      .transform((value) => {
-        const trimmed = value.trim();
-        if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-          return trimmed;
-        }
-        return `https://${trimmed}`;
-      })
-      .pipe(z.url()),
-    description: z.string().min(2).max(120),
-    type: z.enum(['articles', 'inspirations', 'sites', 'tutorials', 'tools']),
-    tags: z.array(z.string().min(1)).min(1),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FavoriteFormData>({
+    resolver: zodResolver(favoriteFormSchema),
     defaultValues: {
       title: favorite.title,
       url: favorite.url,

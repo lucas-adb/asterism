@@ -7,7 +7,6 @@ import {
   FormLabel,
   FormMessage,
 } from './ui/form';
-import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from './ui/input';
@@ -20,32 +19,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from './ui/textarea';
+import {
+  favoriteFormSchema,
+  type FavoriteFormData,
+} from '@/schemas/favorite-form-schema';
 
 interface FavoriteFormProps {
-  defaultValues?: Partial<z.infer<typeof formSchema>>;
-  onSubmit: (values: z.infer<typeof formSchema>) => void;
+  defaultValues?: Partial<FavoriteFormData>;
+  onSubmit: (values: FavoriteFormData) => void;
 }
-
-export type FavoriteFormData = z.infer<typeof formSchema>;
-
-const formSchema = z.object({
-  title: z.string().min(2).max(50),
-  url: z
-    .string()
-    .min(1)
-    .transform((value) => {
-      const trimmed = value.trim();
-      if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-        return trimmed;
-      }
-      return `https://${trimmed}`;
-    })
-    .pipe(z.url()),
-  description: z.string().min(2).max(120),
-  type: z.enum(['articles', 'inspirations', 'sites', 'tutorials', 'tools']),
-  tags: z.array(z.string().min(1)).min(1),
-});
-
 export function FavoriteForm({
   defaultValues = {
     title: '',
@@ -56,12 +38,12 @@ export function FavoriteForm({
   },
   onSubmit,
 }: FavoriteFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FavoriteFormData>({
+    resolver: zodResolver(favoriteFormSchema),
     defaultValues,
   });
 
-  function handleSubmit(values: z.infer<typeof formSchema>) {
+  function handleSubmit(values: FavoriteFormData) {
     onSubmit(values);
     form.reset();
   }
@@ -130,7 +112,8 @@ export function FavoriteForm({
                   <SelectItem value="sites">Sites</SelectItem>
                   <SelectItem value="tutorials">Tutorials</SelectItem>
                   <SelectItem value="articles">Articles</SelectItem>
-                  <SelectItem value="inspiration">Inspiration</SelectItem>
+                  <SelectItem value="inspirations">Inspirations</SelectItem>
+                  <SelectItem value="tools">Tools</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

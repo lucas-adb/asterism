@@ -2,7 +2,8 @@ import type { Favorite } from '@/types/favorite';
 import { Button } from './ui/button';
 import { useState } from 'react';
 import { DialogWrapper } from './dialog-wrapper';
-import { FavoriteForm, type FavoriteFormData } from './favorite-form';
+import { FavoriteForm } from './favorite-form';
+import type { FavoriteFormData } from '@/schemas/favorite-form-schema';
 
 interface AddFavoriteProps {
   onAdd: (favorite: Omit<Favorite, 'id' | 'createdAt'>) => void;
