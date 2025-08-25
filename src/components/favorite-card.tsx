@@ -55,10 +55,10 @@ export function FavoriteCard({
           {favorite.tags.map((tag, index) => {
             return (
               <span
-                key={`${tag}-${index}`}
+                key={`${tag.id}-${index}`}
                 className="px-3 py-1 rounded-full inline-flex text-sm bg-foreground text-background"
               >
-                {tag}
+                {tag.name}
               </span>
             );
           })}
@@ -67,7 +67,7 @@ export function FavoriteCard({
       <CardFooter className="mt-auto">
         <div className="flex justify-between w-full items-center">
           <p className="text-sm text-muted-foreground">
-            {favorite.createdAt.toLocaleDateString()}
+            {new Date(favorite.created_at).toLocaleDateString()}
           </p>
           <Button className="cursor-pointer" asChild>
             <a href={favorite.url} target="_blank">

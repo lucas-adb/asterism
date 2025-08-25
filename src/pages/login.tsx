@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { NavLink } from 'react-router';
+import { useLogin } from '@/hooks/useLogin';
 
 const formSchema = z.object({
   email: z.email().min(2).max(50),
@@ -23,6 +24,8 @@ const formSchema = z.object({
 });
 
 export function LoginPage() {
+  const login = useLogin();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,8 +34,19 @@ export function LoginPage() {
     },
   });
 
+  function handleLogin(values: z.infer<typeof formSchema>) {
+    login.mutate(values, {
+      onSuccess: (data) => {
+        localStorage.setItem('token', data.token);
+      },
+      onError: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
   function handleSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    handleLogin(values);
     form.reset();
   }
 

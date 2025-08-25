@@ -17,8 +17,17 @@ import {
   SelectTrigger,
 } from './components/ui/select';
 import { SelectValue } from '@radix-ui/react-select';
+import { useQuery } from '@tanstack/react-query';
+import { getFavorites } from './api/favorites';
 
 function App() {
+  const token = localStorage.getItem('token');
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['get-favorites'],
+    queryFn: () => getFavorites(token),
+  });
+
   const [favorites, setFavorites] = useState(favoritesMock);
   const [type, setType] = useState<FavoriteType | 'all'>('all');
   const [query, setQuery] = useState('');
@@ -27,7 +36,7 @@ function App() {
     const favorite: Favorite = {
       ...newFavorite,
       id: Date.now().toString(),
-      createdAt: new Date(),
+      created_at: new Date().toISOString(),
     };
 
     setFavorites((prev) => [favorite, ...prev]);
@@ -55,15 +64,16 @@ function App() {
     setFavorites(newFavorites);
   };
 
+  // todo: remove to use the fetch with params
   const filteredFavorites = useMemo(() => {
-    let result = favorites;
+    let result: Favorite[] = data?.favorites;
 
     if (query.length >= 3) {
       result = result.filter(
         (f) =>
           f.title.toLowerCase().includes(query.toLowerCase()) ||
           f.description.toLowerCase().includes(query.toLowerCase()) ||
-          f.tags.some((t) => t.toLowerCase().includes(query.toLowerCase()))
+          f.tags.some((t) => t.name.toLowerCase().includes(query.toLowerCase()))
       );
     }
 
@@ -72,7 +82,10 @@ function App() {
     }
 
     return result;
-  }, [favorites, query, type]);
+  }, [data, query, type]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Erro: {error.message}</div>;
 
   return (
     <div className="min-h-screen">
@@ -116,7 +129,7 @@ function App() {
 
       {filteredFavorites.length > 0 ? (
         <div className="px-4 py-8 container mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid gap-4 auto-rows-fr">
-          {filteredFavorites.map((favorite) => {
+          {filteredFavorites.map((favorite: Favorite) => {
             return (
               <FavoriteCard
                 key={favorite.id}

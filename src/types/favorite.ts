@@ -4,8 +4,16 @@ export interface Favorite {
   url: string;
   description: string;
   type: FavoriteType;
-  tags: string[];
-  createdAt: Date;
+  tags: Tag[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Tag {
+  name: string;
+  id: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export type FavoriteType =
