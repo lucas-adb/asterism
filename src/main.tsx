@@ -10,6 +10,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Test } from './pages/test.tsx';
 import { Home } from './pages/home.tsx';
+import App from './App.tsx';
+import { Toaster } from 'sonner';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/favorites" element={<App />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/test" element={<Test />} />
@@ -27,5 +30,6 @@ createRoot(document.getElementById('root')!).render(
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
+    <Toaster richColors />
   </StrictMode>
 );

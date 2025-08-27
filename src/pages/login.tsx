@@ -15,8 +15,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { useLogin } from '@/hooks/useLogin';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   email: z.email().min(2).max(50),
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 export function LoginPage() {
   const login = useLogin();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,9 +40,11 @@ export function LoginPage() {
     login.mutate(values, {
       onSuccess: (data) => {
         localStorage.setItem('token', data.token);
+        navigate('/favorites');
       },
       onError: (error) => {
         console.error(error);
+        toast.error('Login inválido');
       },
     });
   }
@@ -57,7 +61,9 @@ export function LoginPage() {
           <div className="flex-1 flex justify-center items-center">
             <div className="flex flex-col gap-4 w-full max-w-[250px] sm:max-w-[350px] px-2 sm:px-0">
               <div className="flex flex-col">
-                <h1 className="font-bold text-2xl cursor-pointer mb-4">✨</h1>
+                <h1 className="font-bold text-2xl cursor-pointer mb-4">
+                  <span className="animate-pulse">✨</span> Asterism
+                </h1>
                 <h2 className="font-bold text-2xl">Sign in</h2>
                 <p className="text-muted-foreground text-sm">
                   Not a member?{' '}
