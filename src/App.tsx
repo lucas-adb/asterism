@@ -17,11 +17,13 @@ import {
   SelectTrigger,
 } from './components/ui/select';
 import { SelectValue } from '@radix-ui/react-select';
-import { useQuery } from '@tanstack/react-query';
-import { getFavorites } from './api/favorites';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteFavorite, getFavorites } from './api/favorites';
 
 function App() {
   const token = localStorage.getItem('token');
+
+  const queryClient = useQueryClient();
 
   const { data, error, isLoading } = useQuery({
     queryKey: ['get-favorites'],
@@ -42,14 +44,16 @@ function App() {
     setFavorites((prev) => [favorite, ...prev]);
   };
 
-  const deleteFavorite = (newFavoriteId: string) => {
-    const favorite = favorites.find((f) => f.id === newFavoriteId);
+  const deleteMutation = useMutation({
+    mutationFn: ({ id, token }: { id: string; token: string | null }) =>
+      deleteFavorite(id, token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
+    },
+  });
 
-    if (!favorite) {
-      return;
-    }
-
-    setFavorites((prev) => prev.filter((f) => f.id !== favorite.id));
+  const handleDeleteFavorite = (id: string) => {
+    deleteMutation.mutate({ id, token });
   };
 
   const editFavorite = (newFavorite: Omit<Favorite, 'createdAt'>) => {
@@ -134,7 +138,7 @@ function App() {
               <FavoriteCard
                 key={favorite.id}
                 favorite={favorite}
-                onDelete={deleteFavorite}
+                onDelete={handleDeleteFavorite}
                 onEdit={editFavorite}
               />
             );
