@@ -4,17 +4,23 @@ import {
   editFavorite,
   getFavorites,
 } from '@/api/favorites';
-import type { CreateFavoriteBody } from '@/types/favorite';
+import type { CreateFavoriteBody, FavoritesFilters } from '@/types/favorite';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export function useFavorites({ token }: { token?: string }) {
+export function useFavorites({
+  token,
+  filters = {},
+}: {
+  token?: string;
+  filters?: FavoritesFilters;
+}) {
   const queryClient = useQueryClient();
 
   const query = useQuery({
-    queryKey: ['get-favorites'],
+    queryKey: ['get-favorites', filters],
     queryFn: () => {
       if (!token) throw new Error('No token found');
-      return getFavorites(token);
+      return getFavorites(token, filters);
     },
     enabled: !!token,
   });

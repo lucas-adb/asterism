@@ -30,3 +30,12 @@ export type CreateFavoriteBody = {
   type: FavoriteType;
   tags: string[];
 };
+
+export type FavoritesFilters = {
+  page?: number;
+  limit?: number;
+  sortOrder?: 'asc' | 'desc';
+  search?: string;
+  type?: string;
+  tags?: string[];
+};
