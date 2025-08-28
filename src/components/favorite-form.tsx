@@ -33,7 +33,7 @@ export function FavoriteForm({
     title: '',
     url: '',
     description: '',
-    type: 'sites',
+    type: 'SITES',
     tags: [],
   },
   onSubmit,
@@ -109,11 +109,11 @@ export function FavoriteForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="sites">Sites</SelectItem>
-                  <SelectItem value="tutorials">Tutorials</SelectItem>
-                  <SelectItem value="articles">Articles</SelectItem>
-                  <SelectItem value="inspirations">Inspirations</SelectItem>
-                  <SelectItem value="tools">Tools</SelectItem>
+                  <SelectItem value="SITES">Sites</SelectItem>
+                  <SelectItem value="TUTORIALS">Tutorials</SelectItem>
+                  <SelectItem value="ARTICLES">Articles</SelectItem>
+                  <SelectItem value="INSPIRATIONS">Inspirations</SelectItem>
+                  <SelectItem value="TOOLS">Tools</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

@@ -17,8 +17,16 @@ export interface Tag {
 }
 
 export type FavoriteType =
-  | 'articles'
-  | 'inspirations'
-  | 'sites'
-  | 'tutorials'
-  | 'tools';
+  | 'ARTICLES'
+  | 'INSPIRATIONS'
+  | 'SITES'
+  | 'TUTORIALS'
+  | 'TOOLS';
+
+export type CreateFavoriteBody = {
+  title: string;
+  description: string;
+  url: string;
+  type: FavoriteType;
+  tags: string[];
+};

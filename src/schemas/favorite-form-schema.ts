@@ -14,7 +14,7 @@ export const favoriteFormSchema = z.object({
     })
     .pipe(z.url()),
   description: z.string().min(2).max(120),
-  type: z.enum(['articles', 'inspirations', 'sites', 'tutorials', 'tools']),
+  type: z.enum(['ARTICLES', 'INSPIRATIONS', 'SITES', 'TUTORIALS', 'TOOLS']),
   tags: z.array(z.string().min(1)).min(1),
 });
 

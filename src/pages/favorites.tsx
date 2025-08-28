@@ -1,13 +1,17 @@
-import { Header } from './components/header';
-import { Hero } from './components/hero';
-import { NoFavoritesFound } from './components/no-favorites-found';
-import { Input } from './components/ui/input';
+import { Header } from '../components/header';
+import { Hero } from '../components/hero';
+import { NoFavoritesFound } from '../components/no-favorites-found';
+import { Input } from '../components/ui/input';
 import { MagnifyingGlassIcon } from '@phosphor-icons/react';
-import { favoritesMock } from './mocks/favorites-mock';
-import { useMemo, useState } from 'react';
-import { FavoriteCard } from './components/favorite-card';
-import type { Favorite, FavoriteType } from './types/favorite';
-import { AddFavorite } from './components/add-favorite';
+import { favoritesMock } from '../mocks/favorites-mock';
+import { useEffect, useMemo, useState } from 'react';
+import { FavoriteCard } from '../components/favorite-card';
+import type {
+  CreateFavoriteBody,
+  Favorite,
+  FavoriteType,
+} from '../types/favorite';
+import { AddFavorite } from '../components/add-favorite';
 import {
   Select,
   SelectContent,
@@ -15,13 +19,15 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-} from './components/ui/select';
+} from '../components/ui/select';
 import { SelectValue } from '@radix-ui/react-select';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteFavorite, getFavorites } from './api/favorites';
+import { createFavorite, deleteFavorite, getFavorites } from '../api/favorites';
+import { useNavigate } from 'react-router';
 
-function App() {
+export function Favorites() {
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 
@@ -34,15 +40,27 @@ function App() {
   const [type, setType] = useState<FavoriteType | 'all'>('all');
   const [query, setQuery] = useState('');
 
-  const addFavorite = (newFavorite: Omit<Favorite, 'id' | 'createdAt'>) => {
-    const favorite: Favorite = {
-      ...newFavorite,
-      id: Date.now().toString(),
-      created_at: new Date().toISOString(),
-    };
+  // const addFavorite = (newFavorite: Omit<Favorite, 'id' | 'createdAt'>) => {
+  //   const favorite: Favorite = {
+  //     ...newFavorite,
+  //     id: Date.now().toString(),
+  //     created_at: new Date().toISOString(),
+  //   };
 
-    setFavorites((prev) => [favorite, ...prev]);
+  //   setFavorites((prev) => [favorite, ...prev]);
+  // };
+
+  const handleAddFavorite = (newFavorite: CreateFavoriteBody) => {
+    addMutation.mutate(newFavorite);
   };
+
+  const addMutation = useMutation({
+    mutationFn: (newFavorite: CreateFavoriteBody) =>
+      createFavorite(newFavorite, token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
+    },
+  });
 
   const deleteMutation = useMutation({
     mutationFn: ({ id, token }: { id: string; token: string | null }) =>
@@ -88,6 +106,12 @@ function App() {
     return result;
   }, [data, query, type]);
 
+  useEffect(() => {
+    if (error) {
+      navigate('/login');
+    }
+  }, [error, navigate]);
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Erro: {error.message}</div>;
 
@@ -108,7 +132,7 @@ function App() {
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          <AddFavorite onAdd={addFavorite} />
+          <AddFavorite onAdd={handleAddFavorite} />
           <Select
             onValueChange={(value) => setType(value as FavoriteType | 'all')}
             value={type}
@@ -150,5 +174,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
