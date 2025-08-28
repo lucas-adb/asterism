@@ -1,4 +1,4 @@
-import type { Favorite } from '@/types/favorite';
+import type { CreateFavoriteBody, Favorite } from '@/types/favorite';
 import { Button } from './ui/button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +11,7 @@ import type { FavoriteFormData } from '@/schemas/favorite-form-schema';
 import { favoriteFormSchema } from '@/schemas/favorite-form-schema';
 
 interface EditFavoriteProps {
-  onEdit: (favorite: Omit<Favorite, 'createdAt'>) => void;
+  onEdit: (id: string, favorite: CreateFavoriteBody) => void;
   favorite: Favorite;
 }
 
@@ -25,15 +25,12 @@ export function EditFavorite({ onEdit, favorite }: EditFavoriteProps) {
       url: favorite.url,
       description: favorite.description,
       type: favorite.type,
-      tags: favorite.tags,
+      tags: favorite.tags.map((tag) => tag.id),
     },
   });
 
   function handleSubmit(values: FavoriteFormData) {
-    onEdit({
-      id: favorite.id,
-      ...values,
-    });
+    onEdit(favorite.id, { ...values });
     setOpen(false);
     form.reset();
   }
@@ -69,7 +66,7 @@ export function EditFavorite({ onEdit, favorite }: EditFavoriteProps) {
           url: favorite.url,
           description: favorite.description,
           type: favorite.type,
-          tags: favorite.tags,
+          tags: favorite.tags.map((tag) => tag.name),
         }}
       />
     </DialogWrapper>

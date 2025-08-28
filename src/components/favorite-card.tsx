@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card';
 
 import { Button } from '@/components/ui/button';
-import type { Favorite } from '@/types/favorite';
+import type { CreateFavoriteBody, Favorite } from '@/types/favorite';
 import { EditFavorite } from './edit-favorite';
 
 export function FavoriteCard({
@@ -21,7 +21,7 @@ export function FavoriteCard({
 }: {
   favorite: Favorite;
   onDelete: (id: string) => void;
-  onEdit: (favorite: Omit<Favorite, 'createdAt'>) => void;
+  onEdit: (id: string, favorite: CreateFavoriteBody) => void;
 }) {
   return (
     <Card

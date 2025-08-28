@@ -3,7 +3,6 @@ import { Hero } from '../components/hero';
 import { NoFavoritesFound } from '../components/no-favorites-found';
 import { Input } from '../components/ui/input';
 import { MagnifyingGlassIcon } from '@phosphor-icons/react';
-import { favoritesMock } from '../mocks/favorites-mock';
 import { useEffect, useMemo, useState } from 'react';
 import { FavoriteCard } from '../components/favorite-card';
 import type {
@@ -21,70 +20,50 @@ import {
   SelectTrigger,
 } from '../components/ui/select';
 import { SelectValue } from '@radix-ui/react-select';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createFavorite, deleteFavorite, getFavorites } from '../api/favorites';
 import { useNavigate } from 'react-router';
+import { useFavorites } from '@/hooks/useFavorites';
 
 export function Favorites() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
-  const queryClient = useQueryClient();
-
-  const { data, error, isLoading } = useQuery({
-    queryKey: ['get-favorites'],
-    queryFn: () => getFavorites(token),
+  const {
+    data,
+    error,
+    isLoading,
+    createMutation,
+    deleteMutation,
+    updateMutation,
+  } = useFavorites({
+    token,
   });
 
-  const [favorites, setFavorites] = useState(favoritesMock);
   const [type, setType] = useState<FavoriteType | 'all'>('all');
   const [query, setQuery] = useState('');
 
-  // const addFavorite = (newFavorite: Omit<Favorite, 'id' | 'createdAt'>) => {
-  //   const favorite: Favorite = {
-  //     ...newFavorite,
-  //     id: Date.now().toString(),
-  //     created_at: new Date().toISOString(),
-  //   };
-
-  //   setFavorites((prev) => [favorite, ...prev]);
-  // };
-
   const handleAddFavorite = (newFavorite: CreateFavoriteBody) => {
-    addMutation.mutate(newFavorite);
+    createMutation(newFavorite);
   };
-
-  const addMutation = useMutation({
-    mutationFn: (newFavorite: CreateFavoriteBody) =>
-      createFavorite(newFavorite, token),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: ({ id, token }: { id: string; token: string | null }) =>
-      deleteFavorite(id, token),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
-    },
-  });
 
   const handleDeleteFavorite = (id: string) => {
-    deleteMutation.mutate({ id, token });
+    deleteMutation(id);
   };
 
-  const editFavorite = (newFavorite: Omit<Favorite, 'createdAt'>) => {
-    const newFavorites = favorites.map((f) => {
-      if (f.id === newFavorite.id) {
-        f = { ...f, ...newFavorite };
-      }
-
-      return f;
-    });
-
-    setFavorites(newFavorites);
+  const handleEditFavorite = (id: string, favorite: CreateFavoriteBody) => {
+    updateMutation({ id, favorite });
   };
+
+  // const editFavorite = (newFavorite: Omit<Favorite, 'createdAt'>) => {
+  //   const newFavorites = favorites.map((f) => {
+  //     if (f.id === newFavorite.id) {
+  //       f = { ...f, ...newFavorite };
+  //     }
+
+  //     return f;
+  //   });
+
+  //   setFavorites(newFavorites);
+  // };
 
   // todo: remove to use the fetch with params
   const filteredFavorites = useMemo(() => {
@@ -163,7 +142,7 @@ export function Favorites() {
                 key={favorite.id}
                 favorite={favorite}
                 onDelete={handleDeleteFavorite}
-                onEdit={editFavorite}
+                onEdit={handleEditFavorite}
               />
             );
           })}

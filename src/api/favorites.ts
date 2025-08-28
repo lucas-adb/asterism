@@ -54,3 +54,26 @@ export async function createFavorite(
 
   return;
 }
+
+export async function editFavorite(
+  id: string,
+  data: CreateFavoriteBody,
+  token: string | null
+) {
+  if (!token) {
+    throw new Error('No token found');
+  }
+
+  const res = await fetch(`http://localhost:3333/favorite/${id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Request Error');
+
+  return;
+}
