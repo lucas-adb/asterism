@@ -35,7 +35,7 @@ export function Favorites() {
     deleteMutation,
     updateMutation,
   } = useFavorites({
-    token,
+    token: token ?? undefined,
   });
 
   const [type, setType] = useState<FavoriteType | 'all'>('all');
@@ -52,18 +52,6 @@ export function Favorites() {
   const handleEditFavorite = (id: string, favorite: CreateFavoriteBody) => {
     updateMutation({ id, favorite });
   };
-
-  // const editFavorite = (newFavorite: Omit<Favorite, 'createdAt'>) => {
-  //   const newFavorites = favorites.map((f) => {
-  //     if (f.id === newFavorite.id) {
-  //       f = { ...f, ...newFavorite };
-  //     }
-
-  //     return f;
-  //   });
-
-  //   setFavorites(newFavorites);
-  // };
 
   // todo: remove to use the fetch with params
   const filteredFavorites = useMemo(() => {

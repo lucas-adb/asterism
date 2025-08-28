@@ -1,10 +1,6 @@
 import type { CreateFavoriteBody } from '@/types/favorite';
 
-export async function getFavorites(token: string | null) {
-  if (!token) {
-    throw new Error('No token found');
-  }
-
+export async function getFavorites(token: string) {
   const res = await fetch('http://localhost:3333/favorites', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -16,11 +12,7 @@ export async function getFavorites(token: string | null) {
   return data;
 }
 
-export async function deleteFavorite(id: string, token: string | null) {
-  if (!token) {
-    throw new Error('No token found');
-  }
-
+export async function deleteFavorite(id: string, token: string) {
   const res = await fetch(`http://localhost:3333/favorite/${id}`, {
     method: 'DELETE',
     headers: {
@@ -33,14 +25,7 @@ export async function deleteFavorite(id: string, token: string | null) {
   return;
 }
 
-export async function createFavorite(
-  data: CreateFavoriteBody,
-  token: string | null
-) {
-  if (!token) {
-    throw new Error('No token found');
-  }
-
+export async function createFavorite(data: CreateFavoriteBody, token: string) {
   const res = await fetch('http://localhost:3333/favorite', {
     method: 'POST',
     headers: {
@@ -58,12 +43,8 @@ export async function createFavorite(
 export async function editFavorite(
   id: string,
   data: CreateFavoriteBody,
-  token: string | null
+  token: string
 ) {
-  if (!token) {
-    throw new Error('No token found');
-  }
-
   const res = await fetch(`http://localhost:3333/favorite/${id}`, {
     method: 'PUT',
     headers: {

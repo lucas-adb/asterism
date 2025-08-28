@@ -7,18 +7,23 @@ import {
 import type { CreateFavoriteBody } from '@/types/favorite';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export function useFavorites({ token }: { token?: string | null }) {
+export function useFavorites({ token }: { token?: string }) {
   const queryClient = useQueryClient();
 
   const query = useQuery({
     queryKey: ['get-favorites'],
-    queryFn: () => getFavorites(token ?? null),
+    queryFn: () => {
+      if (!token) throw new Error('No token found');
+      return getFavorites(token);
+    },
     enabled: !!token,
   });
 
   const createMutation = useMutation({
-    mutationFn: (favorite: CreateFavoriteBody) =>
-      createFavorite(favorite, token ?? null),
+    mutationFn: (favorite: CreateFavoriteBody) => {
+      if (!token) throw new Error('No token found');
+      return createFavorite(favorite, token);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
@@ -31,14 +36,20 @@ export function useFavorites({ token }: { token?: string | null }) {
     }: {
       id: string;
       favorite: CreateFavoriteBody;
-    }) => editFavorite(id, favorite, token ?? null),
+    }) => {
+      if (!token) throw new Error('No token found');
+      return editFavorite(id, favorite, token);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => deleteFavorite(id, token ?? null),
+    mutationFn: (id: string) => {
+      if (!token) throw new Error('No token found');
+      return deleteFavorite(id, token);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
