@@ -9,7 +9,7 @@ export function NotFound() {
       <div className="px-4 py-8 container mx-auto lg:max-w-[1024px]">
         <Card className="flex flex-col h-[700px] border-none text-center p-4 gap-4 justify-center items-center">
           <img
-            className="max-w-[450px] max-h-[450px] mx-auto"
+            className="max-w-[450px] max-h-[450px] mx-auto transition-all duration-300 hover:scale-[1.02] animate-scale-in"
             src={etDisappointed}
             alt=""
           />
