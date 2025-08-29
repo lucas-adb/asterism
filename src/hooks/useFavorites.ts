@@ -4,8 +4,10 @@ import {
   editFavorite,
   getFavorites,
 } from '@/api/favorites';
+import { fetchWithRefresh } from '@/api/fetch-with-refresh';
 import type { CreateFavoriteBody, FavoritesFilters } from '@/types/favorite';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 export function useFavorites({
   token,
@@ -15,14 +17,33 @@ export function useFavorites({
   filters?: FavoritesFilters;
 }) {
   const queryClient = useQueryClient();
+  const [accessToken, setAccessToken] = useState(token);
+
+  // const query = useQuery({
+  //   queryKey: ['get-favorites', filters],
+  //   queryFn: () => {
+  //     if (!token) throw new Error('No token found');
+  //     return getFavorites(token, filters);
+  //   },
+  //   enabled: !!token,
+  // });
 
   const query = useQuery({
     queryKey: ['get-favorites', filters],
-    queryFn: () => {
-      if (!token) throw new Error('No token found');
-      return getFavorites(token, filters);
+    queryFn: async () => {
+      if (!accessToken) throw new Error('No token found');
+      const res = await fetchWithRefresh(
+        (token) => getFavorites(token, filters),
+        accessToken,
+        (newToken) => {
+          setAccessToken(newToken);
+          localStorage.setItem('token', newToken);
+        }
+      );
+      if (!res.ok) throw new Error('Request Error');
+      return res.json();
     },
-    enabled: !!token,
+    enabled: !!accessToken,
   });
 
   const createMutation = useMutation({
