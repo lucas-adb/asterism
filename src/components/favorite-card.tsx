@@ -1,4 +1,12 @@
-import { RocketLaunchIcon, TrashIcon } from '@phosphor-icons/react';
+import {
+  MagnifyingGlassIcon,
+  VideoIcon,
+  TrashIcon,
+  BookIcon,
+  LightbulbIcon,
+  WrenchIcon,
+  RocketLaunchIcon,
+} from '@phosphor-icons/react';
 
 import {
   Card,
@@ -14,6 +22,14 @@ import { Button } from '@/components/ui/button';
 import type { CreateFavoriteBody, Favorite } from '@/types/favorite';
 import { EditFavorite } from './edit-favorite';
 
+const iconMap = {
+  SITES: MagnifyingGlassIcon,
+  ARTICLES: BookIcon,
+  INSPIRATIONS: LightbulbIcon,
+  TOOLS: WrenchIcon,
+  TUTORIALS: VideoIcon,
+};
+
 export function FavoriteCard({
   favorite,
   onDelete,
@@ -23,13 +39,19 @@ export function FavoriteCard({
   onDelete: (id: string) => void;
   onEdit: (id: string, favorite: CreateFavoriteBody) => void;
 }) {
+  const Icon = iconMap[favorite.type];
+
   return (
     <Card
       id={favorite.id}
       className="hover:shadow-foreground/20 transition-all duration-300 hover:scale-[1.02] animate-scale-in"
     >
       <CardHeader>
-        <CardTitle className="line-clamp-2 pb-0.5" title={favorite.title}>
+        <CardTitle
+          className="line-clamp-2 pb-0.5 flex gap-2"
+          title={favorite.title}
+        >
+          <Icon className="h-4 w-4 text-muted-foreground" />
           {favorite.title}
         </CardTitle>
         <CardDescription

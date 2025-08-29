@@ -22,7 +22,14 @@ export async function getFavorites(token: string, filters: FavoritesFilters) {
       credentials: 'include',
     }
   );
-  if (!res.ok) throw new Error('Request Error');
+  if (!res.ok) {
+    if (res.status === 401) {
+      throw new Error('Unauthorized');
+    }
+
+    throw new Error('Request Error');
+  }
+
   const data = await res.json();
   return data;
 }

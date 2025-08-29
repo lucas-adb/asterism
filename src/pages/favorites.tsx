@@ -2,7 +2,7 @@ import { Header } from '../components/header';
 import { Hero } from '../components/hero';
 import { NoFavoritesFound } from '../components/no-favorites-found';
 import { Input } from '../components/ui/input';
-import { MagnifyingGlassIcon } from '@phosphor-icons/react';
+import { MagnifyingGlassIcon, SpinnerGapIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import { FavoriteCard } from '../components/favorite-card';
 import type {
@@ -23,6 +23,30 @@ import { SelectValue } from '@radix-ui/react-select';
 import { useNavigate } from 'react-router';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useDebounce } from '@/hooks/useDebounce';
+
+function LoadingState() {
+  return (
+    <div className="min-h-screen">
+      <Header />
+      <Hero />
+      <div className="flex justify-center">
+        <SpinnerGapIcon className="h-8 w-8 animate-spin" />
+      </div>
+    </div>
+  );
+}
+
+function ErrorState() {
+  return (
+    <div className="min-h-screen">
+      <Header />
+      <Hero />
+      <div className="flex justify-center">
+        <h1 className="text-center">Ops, something bad happened 😔</h1>
+      </div>
+    </div>
+  );
+}
 
 export function Favorites() {
   const token = localStorage.getItem('token');
@@ -70,20 +94,18 @@ export function Favorites() {
   };
 
   useEffect(() => {
-    if (error) {
+    if (error && error.message === 'Unauthorized') {
       navigate('/login');
     }
   }, [error, navigate]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Erro: {error.message}</div>;
+  if (isLoading) return <LoadingState />;
+  if (error) return <ErrorState />;
 
   return (
     <div className="min-h-screen">
       <Header />
-
       <Hero />
-
       <div className="px-4 py-8 container mx-auto">
         <div className="flex flex-col sm:flex-row gap-2 mb-8">
           <div className="flex-1/2 flex gap-2">
