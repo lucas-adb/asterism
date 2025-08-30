@@ -5,11 +5,7 @@ import { Input } from '../components/ui/input';
 import { MagnifyingGlassIcon, SpinnerGapIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import { FavoriteCard } from '../components/favorite-card';
-import type {
-  CreateFavoriteBody,
-  Favorite,
-  FavoriteType,
-} from '../types/favorite';
+import type { FavoriteBody, Favorite, FavoriteType } from '../types/favorite';
 import { AddFavorite } from '../components/add-favorite';
 import {
   Select,
@@ -49,13 +45,16 @@ function ErrorState() {
 }
 
 export function Favorites() {
-  const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
-  // todo: add buttons to manipulate pagination
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  // todo: use states instead o pure variables
+  // const [page, setPage] = useState(1);
+  // const [limit, setLimit] = useState(10);
+  // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+  const page = 1;
+  const limit = 10;
+  const sortOrder = 'desc';
 
   // filter
   const [type, setType] = useState<FavoriteType | 'ALL'>('ALL');
@@ -71,7 +70,6 @@ export function Favorites() {
     deleteMutation,
     updateMutation,
   } = useFavorites({
-    token: token ?? undefined,
     filters: {
       page,
       limit,
@@ -81,7 +79,7 @@ export function Favorites() {
     },
   });
 
-  const handleAddFavorite = (newFavorite: CreateFavoriteBody) => {
+  const handleAddFavorite = (newFavorite: FavoriteBody) => {
     createMutation(newFavorite);
   };
 
@@ -89,7 +87,7 @@ export function Favorites() {
     deleteMutation(id);
   };
 
-  const handleEditFavorite = (id: string, favorite: CreateFavoriteBody) => {
+  const handleEditFavorite = (id: string, favorite: FavoriteBody) => {
     updateMutation({ id, favorite });
   };
 
