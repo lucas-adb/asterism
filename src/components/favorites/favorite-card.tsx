@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/card';
 
 import { Button } from '@/components/ui/button';
-import type { CreateFavoriteBody, Favorite } from '@/types/favorite';
+import type { CreateFavoriteBody, Favorite } from '@/types/favorite.types';
 import { EditFavorite } from './edit-favorite';
 
 const iconMap = {

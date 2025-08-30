@@ -1,12 +1,12 @@
-import type { CreateFavoriteBody } from '@/types/favorite';
-import { Button } from './ui/button';
+import type { FavoriteBody } from '@/types/favorite.types';
+import { Button } from '../ui/button';
 import { useState } from 'react';
-import { DialogWrapper } from './dialog-wrapper';
-import { FavoriteForm } from './favorite-form';
-import type { FavoriteFormData } from '@/schemas/favorite-form-schema';
+import { DialogWrapper } from '@/components/common/dialog-wrapper';
+import { FavoriteForm } from '@/components/forms/favorite-form';
+import type { FavoriteFormData } from '@/schemas/favorite.schema';
 
 interface AddFavoriteProps {
-  onAdd: (favorite: CreateFavoriteBody) => void;
+  onAdd: (favorite: FavoriteBody) => void;
 }
 
 export function AddFavorite({ onAdd }: AddFavoriteProps) {

@@ -1,12 +1,16 @@
-import { Header } from '../components/header';
-import { Hero } from '../components/hero';
-import { NoFavoritesFound } from '../components/no-favorites-found';
+import { Header } from '../components/layout/header';
+import { Hero } from '../components/layout/hero';
+import { NoFavoritesFound } from '../components/favorites/no-favorites-found';
 import { Input } from '../components/ui/input';
 import { MagnifyingGlassIcon, SpinnerGapIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
-import { FavoriteCard } from '../components/favorite-card';
-import type { FavoriteBody, Favorite, FavoriteType } from '../types/favorite';
-import { AddFavorite } from '../components/add-favorite';
+import { FavoriteCard } from '../components/favorites/favorite-card';
+import type {
+  FavoriteBody,
+  Favorite,
+  FavoriteType,
+} from '../types/favorite.types';
+import { AddFavorite } from '../components/favorites/add-favorite';
 import {
   Select,
   SelectContent,

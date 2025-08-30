@@ -1,5 +1,5 @@
 import defaultProfilePic from '@/assets/et-head.svg';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Link } from 'react-router';
 
 type HeaderProps = {

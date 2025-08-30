@@ -1,4 +1,4 @@
-import { getFavorites } from '@/api/favorites';
+import { getFavorites } from '@/api/favorites.api';
 import { useQuery } from '@tanstack/react-query';
 
 export function Test() {

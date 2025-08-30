@@ -3,8 +3,8 @@ import {
   deleteFavorite,
   editFavorite,
   getFavorites,
-} from '@/api/favorites';
-import type { FavoriteBody, FavoritesFilters } from '@/types/favorite';
+} from '@/api/favorites.api';
+import type { FavoriteBody, FavoritesFilters } from '@/types/favorite.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useFavorites({ filters = {} }: { filters?: FavoritesFilters }) {

@@ -1,5 +1,5 @@
-import type { FavoriteBody, FavoritesFilters } from '@/types/favorite';
-import { api } from './api';
+import type { FavoriteBody, FavoritesFilters } from '@/types/favorite.types';
+import { api } from './client';
 
 export async function getFavorites(filters: FavoritesFilters) {
   const { type, ...otherFilters } = filters;
