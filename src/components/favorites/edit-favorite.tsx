@@ -1,17 +1,19 @@
-import type { CreateFavoriteBody, Favorite } from '@/types/favorite';
-import { Button } from './ui/button';
+import type { FavoriteBody, Favorite } from '@/types/favorite.types';
+import { Button } from '../ui/button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { PenIcon } from '@phosphor-icons/react';
 
-import { DialogWrapper } from './dialog-wrapper';
-import { FavoriteForm } from './favorite-form';
-import type { FavoriteFormData } from '@/schemas/favorite-form-schema';
-import { favoriteFormSchema } from '@/schemas/favorite-form-schema';
+import { DialogWrapper } from '@/components/common/dialog-wrapper';
+import { FavoriteForm } from '@/components/forms/favorite-form';
+import {
+  type FavoriteFormData,
+  favoriteFormSchema,
+} from '@/schemas/favorite.schema';
 
 interface EditFavoriteProps {
-  onEdit: (id: string, favorite: CreateFavoriteBody) => void;
+  onEdit: (id: string, favorite: FavoriteBody) => void;
   favorite: Favorite;
 }
 

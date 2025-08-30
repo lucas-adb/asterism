@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/card';
 
 import { Button } from '@/components/ui/button';
-import type { CreateFavoriteBody, Favorite } from '@/types/favorite';
+import type { FavoriteBody, Favorite } from '@/types/favorite.types';
 import { EditFavorite } from './edit-favorite';
 
 const iconMap = {
@@ -37,7 +37,7 @@ export function FavoriteCard({
 }: {
   favorite: Favorite;
   onDelete: (id: string) => void;
-  onEdit: (id: string, favorite: CreateFavoriteBody) => void;
+  onEdit: (id: string, favorite: FavoriteBody) => void;
 }) {
   const Icon = iconMap[favorite.type];
 

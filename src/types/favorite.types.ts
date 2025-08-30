@@ -23,7 +23,7 @@ export type FavoriteType =
   | 'TUTORIALS'
   | 'TOOLS';
 
-export type CreateFavoriteBody = {
+export type FavoriteBody = {
   title: string;
   description: string;
   url: string;

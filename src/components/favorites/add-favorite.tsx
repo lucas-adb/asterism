@@ -1,5 +1,5 @@
 import type { FavoriteBody } from '@/types/favorite.types';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { useState } from 'react';
 import { DialogWrapper } from '@/components/common/dialog-wrapper';
 import { FavoriteForm } from '@/components/forms/favorite-form';

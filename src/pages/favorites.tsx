@@ -1,16 +1,16 @@
-import { Header } from '../components/header';
-import { Hero } from '../components/hero';
-import { NoFavoritesFound } from '../components/no-favorites-found';
+import { Header } from '../components/layout/header';
+import { Hero } from '../components/layout/hero';
+import { NoFavoritesFound } from '../components/favorites/no-favorites-found';
 import { Input } from '../components/ui/input';
 import { MagnifyingGlassIcon, SpinnerGapIcon } from '@phosphor-icons/react';
-import { useEffect, useState } from 'react';
-import { FavoriteCard } from '../components/favorite-card';
+import { useState } from 'react';
+import { FavoriteCard } from '../components/favorites/favorite-card';
 import type {
-  CreateFavoriteBody,
+  FavoriteBody,
   Favorite,
   FavoriteType,
-} from '../types/favorite';
-import { AddFavorite } from '../components/add-favorite';
+} from '../types/favorite.types';
+import { AddFavorite } from '../components/favorites/add-favorite';
 import {
   Select,
   SelectContent,
@@ -20,7 +20,6 @@ import {
   SelectTrigger,
 } from '../components/ui/select';
 import { SelectValue } from '@radix-ui/react-select';
-import { useNavigate } from 'react-router';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useDebounce } from '@/hooks/useDebounce';
 
@@ -49,13 +48,14 @@ function ErrorState() {
 }
 
 export function Favorites() {
-  const token = localStorage.getItem('token');
-  const navigate = useNavigate();
+  // todo: use states instead o pure variables
+  // const [page, setPage] = useState(1);
+  // const [limit, setLimit] = useState(10);
+  // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  // todo: add buttons to manipulate pagination
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const page = 1;
+  const limit = 10;
+  const sortOrder = 'desc';
 
   // filter
   const [type, setType] = useState<FavoriteType | 'ALL'>('ALL');
@@ -71,7 +71,6 @@ export function Favorites() {
     deleteMutation,
     updateMutation,
   } = useFavorites({
-    token: token ?? undefined,
     filters: {
       page,
       limit,
@@ -81,7 +80,7 @@ export function Favorites() {
     },
   });
 
-  const handleAddFavorite = (newFavorite: CreateFavoriteBody) => {
+  const handleAddFavorite = (newFavorite: FavoriteBody) => {
     createMutation(newFavorite);
   };
 
@@ -89,15 +88,15 @@ export function Favorites() {
     deleteMutation(id);
   };
 
-  const handleEditFavorite = (id: string, favorite: CreateFavoriteBody) => {
+  const handleEditFavorite = (id: string, favorite: FavoriteBody) => {
     updateMutation({ id, favorite });
   };
 
-  useEffect(() => {
-    if (error && error.message === 'Unauthorized') {
-      navigate('/login');
-    }
-  }, [error, navigate]);
+  // useEffect(() => {
+  //   if (!user && !token) {
+  //     navigate('/login');
+  //   }
+  // }, [navigate, token, user]);
 
   if (isLoading) return <LoadingState />;
   if (error) return <ErrorState />;
