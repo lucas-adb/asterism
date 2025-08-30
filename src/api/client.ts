@@ -36,6 +36,7 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${data.token}`;
       } catch (refreshError) {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }

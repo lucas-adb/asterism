@@ -1,13 +1,16 @@
 import { favoritesApi } from '@/api/favorites.api';
+import { useAuth } from '@/hooks/useAuth';
 import type { FavoriteBody, FavoritesFilters } from '@/types/favorite.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useFavorites({ filters = {} }: { filters?: FavoritesFilters }) {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
 
   const query = useQuery({
     queryKey: ['get-favorites', filters],
     queryFn: () => favoritesApi.getAll(filters),
+    enabled: isAuthenticated,
   });
 
   const createMutation = useMutation({
@@ -33,7 +36,7 @@ export function useFavorites({ filters = {} }: { filters?: FavoritesFilters }) {
   });
 
   return {
-    data: query.data || [],
+    data: query.data || { favorites: [] },
     isLoading: query.isLoading,
     error: query.error,
     createMutation: createMutation.mutate,

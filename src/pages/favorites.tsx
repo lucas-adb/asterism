@@ -3,7 +3,7 @@ import { Hero } from '../components/layout/hero';
 import { NoFavoritesFound } from '../components/favorites/no-favorites-found';
 import { Input } from '../components/ui/input';
 import { MagnifyingGlassIcon, SpinnerGapIcon } from '@phosphor-icons/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FavoriteCard } from '../components/favorites/favorite-card';
 import type {
   FavoriteBody,
@@ -20,7 +20,6 @@ import {
   SelectTrigger,
 } from '../components/ui/select';
 import { SelectValue } from '@radix-ui/react-select';
-import { useNavigate } from 'react-router';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useDebounce } from '@/hooks/useDebounce';
 
@@ -49,8 +48,6 @@ function ErrorState() {
 }
 
 export function Favorites() {
-  const navigate = useNavigate();
-
   // todo: use states instead o pure variables
   // const [page, setPage] = useState(1);
   // const [limit, setLimit] = useState(10);
@@ -95,11 +92,11 @@ export function Favorites() {
     updateMutation({ id, favorite });
   };
 
-  useEffect(() => {
-    if (error && error.message === 'Unauthorized') {
-      navigate('/login');
-    }
-  }, [error, navigate]);
+  // useEffect(() => {
+  //   if (!user && !token) {
+  //     navigate('/login');
+  //   }
+  // }, [navigate, token, user]);
 
   if (isLoading) return <LoadingState />;
   if (error) return <ErrorState />;
