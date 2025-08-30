@@ -2,7 +2,7 @@ import type { FavoriteBody, FavoritesFilters } from '@/types/favorite.types';
 import { api } from './client';
 
 export const favoritesApi = {
-  getAll: (filters: FavoritesFilters) => {
+  getAll: async (filters: FavoritesFilters) => {
     const { type, ...otherFilters } = filters;
 
     const params = {
@@ -10,10 +10,16 @@ export const favoritesApi = {
       ...(type && type !== 'ALL' && { type }),
     };
 
-    return api.get('/favorites', { params });
+    const response = await api.get('/favorites', { params });
+    return response.data;
   },
-  create: (favorite: FavoriteBody) => api.post('/favorite', favorite),
-  update: (id: string, favorite: FavoriteBody) =>
-    api.put(`/favorite/${id}`, favorite),
-  delete: (id: string) => api.delete(`/favorite/${id}`),
+  create: async (favorite: FavoriteBody) => {
+    const response = await api.post('/favorite', favorite);
+    return response.data;
+  },
+  update: async (id: string, favorite: FavoriteBody) => {
+    const response = await api.put(`/favorite/${id}`, favorite);
+    return response.data;
+  },
+  delete: async (id: string) => await api.delete(`/favorite/${id}`),
 };
