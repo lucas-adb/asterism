@@ -1,9 +1,4 @@
-import {
-  createFavorite,
-  deleteFavorite,
-  editFavorite,
-  getFavorites,
-} from '@/api/favorites.api';
+import { favoritesApi } from '@/api/favorites.api';
 import type { FavoriteBody, FavoritesFilters } from '@/types/favorite.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -12,11 +7,11 @@ export function useFavorites({ filters = {} }: { filters?: FavoritesFilters }) {
 
   const query = useQuery({
     queryKey: ['get-favorites', filters],
-    queryFn: () => getFavorites(filters),
+    queryFn: () => favoritesApi.getAll(filters),
   });
 
   const createMutation = useMutation({
-    mutationFn: createFavorite,
+    mutationFn: favoritesApi.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
@@ -24,14 +19,14 @@ export function useFavorites({ filters = {} }: { filters?: FavoritesFilters }) {
 
   const updatedMutation = useMutation({
     mutationFn: ({ id, favorite }: { id: string; favorite: FavoriteBody }) =>
-      editFavorite(id, favorite),
+      favoritesApi.update(id, favorite),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => deleteFavorite(id),
+    mutationFn: (id: string) => favoritesApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
