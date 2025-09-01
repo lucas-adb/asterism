@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { NavLink, useNavigate } from 'react-router';
 import { useLogin } from '@/hooks/useLogin';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 const formSchema = z.object({
   email: z.email().min(2).max(50),
@@ -25,6 +26,7 @@ const formSchema = z.object({
 });
 
 export function LoginPage() {
+  const { login: authLogin } = useAuth();
   const login = useLogin();
   const navigate = useNavigate();
 
@@ -40,6 +42,16 @@ export function LoginPage() {
     login.mutate(values, {
       onSuccess: (data) => {
         localStorage.setItem('token', data.token);
+
+        authLogin(
+          {
+            id: data.user.id,
+            username: data.user.username,
+            email: data.user.email,
+          },
+          data.token
+        );
+
         navigate('/favorites');
       },
       onError: (error) => {

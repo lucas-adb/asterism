@@ -1,4 +1,4 @@
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -6,10 +6,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from './ui/form';
+} from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from './ui/input';
+import { Input } from '@/components/ui/input';
 
 import {
   Select,
@@ -18,11 +18,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from './ui/textarea';
+import { Textarea } from '@/components/ui/textarea';
 import {
   favoriteFormSchema,
   type FavoriteFormData,
-} from '@/schemas/favorite-form-schema';
+} from '@/schemas/favorite.schema';
 
 interface FavoriteFormProps {
   defaultValues?: Partial<FavoriteFormData>;

@@ -1,68 +1,52 @@
-import {
-  createFavorite,
-  deleteFavorite,
-  editFavorite,
-  getFavorites,
-} from '@/api/favorites';
-import type { CreateFavoriteBody, FavoritesFilters } from '@/types/favorite';
+import { favoritesApi } from '@/api/favorites.api';
+import { useAuth } from '@/hooks/useAuth';
+import type { FavoriteBody, FavoritesFilters } from '@/types/favorite.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export function useFavorites({
-  token,
-  filters = {},
-}: {
-  token?: string;
-  filters?: FavoritesFilters;
-}) {
+export function useFavorites({ filters = {} }: { filters?: FavoritesFilters }) {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
 
   const query = useQuery({
     queryKey: ['get-favorites', filters],
-    queryFn: () => {
-      if (!token) throw new Error('No token found');
-      return getFavorites(token, filters);
-    },
-    enabled: !!token,
+    queryFn: () => favoritesApi.getAll(filters),
+    enabled: isAuthenticated,
   });
 
   const createMutation = useMutation({
-    mutationFn: (favorite: CreateFavoriteBody) => {
-      if (!token) throw new Error('No token found');
-      return createFavorite(favorite, token);
-    },
+    mutationFn: favoritesApi.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
   });
 
   const updatedMutation = useMutation({
-    mutationFn: ({
-      id,
-      favorite,
-    }: {
-      id: string;
-      favorite: CreateFavoriteBody;
-    }) => {
-      if (!token) throw new Error('No token found');
-      return editFavorite(id, favorite, token);
-    },
+    mutationFn: ({ id, favorite }: { id: string; favorite: FavoriteBody }) =>
+      favoritesApi.update(id, favorite),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => {
-      if (!token) throw new Error('No token found');
-      return deleteFavorite(id, token);
-    },
+    mutationFn: (id: string) => favoritesApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['get-favorites'] });
     },
   });
 
   return {
-    data: query.data || [],
+    data: query.data || {
+      favorites: [],
+      pagination: {
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 0,
+        hasNextPage: false,
+        hasPrevPage: false,
+      },
+    },
     isLoading: query.isLoading,
     error: query.error,
     createMutation: createMutation.mutate,
