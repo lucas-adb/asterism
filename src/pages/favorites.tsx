@@ -22,6 +22,7 @@ import {
 import { SelectValue } from '@radix-ui/react-select';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useDebounce } from '@/hooks/useDebounce';
+import { FavoritesPagination } from '@/components/favorites/favorites-pagination';
 
 function LoadingState() {
   return (
@@ -48,12 +49,11 @@ function ErrorState() {
 }
 
 export function Favorites() {
-  // todo: use states instead o pure variables
-  // const [page, setPage] = useState(1);
-  // const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  // const [limit, setLimit] = useState(20);
   // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  const page = 1;
+  // todo: use states instead of pure variables
   const limit = 10;
   const sortOrder = 'desc';
 
@@ -92,11 +92,9 @@ export function Favorites() {
     updateMutation({ id, favorite });
   };
 
-  // useEffect(() => {
-  //   if (!user && !token) {
-  //     navigate('/login');
-  //   }
-  // }, [navigate, token, user]);
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
 
   if (isLoading) return <LoadingState />;
   if (error) return <ErrorState />;
@@ -157,6 +155,14 @@ export function Favorites() {
         </div>
       ) : (
         <NoFavoritesFound />
+      )}
+
+      {data?.pagination && data.pagination.totalPages > 1 && (
+        <FavoritesPagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={handlePageChange}
+        />
       )}
     </div>
   );

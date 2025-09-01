@@ -36,7 +36,17 @@ export function useFavorites({ filters = {} }: { filters?: FavoritesFilters }) {
   });
 
   return {
-    data: query.data || { favorites: [] },
+    data: query.data || {
+      favorites: [],
+      pagination: {
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 0,
+        hasNextPage: false,
+        hasPrevPage: false,
+      },
+    },
     isLoading: query.isLoading,
     error: query.error,
     createMutation: createMutation.mutate,
