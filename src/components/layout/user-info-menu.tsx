@@ -26,6 +26,14 @@ export function UserInfoMenu() {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => {
+              logout();
+              navigate('/favorites');
+            }}
+          >
+            My Favorites
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
