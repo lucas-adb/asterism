@@ -21,7 +21,7 @@ export function AddFavorite({ onAdd }: AddFavoriteProps) {
     <DialogWrapper
       open={open}
       onOpenChange={setOpen}
-      trigger={<Button className="cursor-pointer">Save favorite</Button>}
+      trigger={<Button className="cursor-pointer">Add favorite</Button>}
       title={'Save New Favorite'}
       description={'Please fill all the fields to save a link.'}
     >

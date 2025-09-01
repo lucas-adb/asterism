@@ -104,7 +104,6 @@ export function Favorites() {
   return (
     <div className="min-h-screen">
       <Header />
-      <Hero />
       <div className="px-4 py-8 container mx-auto">
         <div className="flex flex-col sm:flex-row gap-2 mb-8">
           <div className="flex-1/2 flex gap-2">
