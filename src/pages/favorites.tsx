@@ -1,5 +1,4 @@
 import { Header } from '../components/layout/header';
-import { Hero } from '../components/layout/hero';
 import { NoFavoritesFound } from '../components/favorites/no-favorites-found';
 import { Input } from '../components/ui/input';
 import { MagnifyingGlassIcon, SpinnerGapIcon } from '@phosphor-icons/react';
@@ -28,7 +27,6 @@ function LoadingState() {
   return (
     <div className="min-h-screen">
       <Header />
-      <Hero />
       <div className="flex justify-center">
         <SpinnerGapIcon className="h-8 w-8 animate-spin" />
       </div>
@@ -40,7 +38,6 @@ function ErrorState() {
   return (
     <div className="min-h-screen">
       <Header />
-      <Hero />
       <div className="flex justify-center">
         <h1 className="text-center">Ops, something bad happened 😔</h1>
       </div>

@@ -64,7 +64,7 @@ export function FavoriteCard({
           <EditFavorite onEdit={onEdit} favorite={favorite} />
           <Button
             size={'icon'}
-            variant={'ghost'}
+            variant={'link'}
             className="h-4 w-4 cursor-pointer"
             onClick={() => onDelete(favorite.id)}
           >

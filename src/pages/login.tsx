@@ -67,7 +67,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-indigo-500 via-purple-500 to-pink-500">
+    <div className="min-h-screen bg-gradient-to-l from-chart-1 to-chart-5">
       <div className="px-4 py-8 container mx-auto lg:max-w-[1024px]">
         <Card className="flex flex-row p-0 h-[700px] border-none">
           <div className="flex-1 flex justify-center items-center">
