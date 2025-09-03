@@ -5,7 +5,11 @@ import { Button } from '@/components/ui/button';
 
 export function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-l from-indigo-500 via-purple-500 to-pink-500">
+    <div className="min-h-screen bg-gradient-to-l from-chart-1 to-chart-5">
+      <meta
+        name="description"
+        content="Sorry, the page you are looking for does not exist. Return to the home page and continue your journey."
+      />
       <div className="px-4 py-8 container mx-auto lg:max-w-[1024px]">
         <Card className="flex flex-col h-[700px] border-none text-center p-4 gap-4 justify-center items-center">
           <img

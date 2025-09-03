@@ -98,6 +98,10 @@ export function Favorites() {
 
   return (
     <div className="min-h-screen">
+      <meta
+        name="description"
+        content="View, edit, and organize your favorite links. Filter by category, search, and add tags to keep your bookmarks tidy."
+      />
       <Header />
       <div className="px-4 py-8 container mx-auto">
         <div className="flex flex-col sm:flex-row gap-2 mb-8">

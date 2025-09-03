@@ -66,6 +66,10 @@ export function LoginPage() {
 
   return (
     <SignWrapper title="Sign In" text="Not a member?" path="/signup">
+      <meta
+        name="description"
+        content="Access your Asterism account to manage your bookmarks. Secure login with email and password."
+      />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}

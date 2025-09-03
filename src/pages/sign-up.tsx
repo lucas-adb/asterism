@@ -80,6 +80,10 @@ export function SignUpPage() {
 
   return (
     <SignWrapper title="Sign Up" text="Already a member?" path="/login">
+      <meta
+        name="description"
+        content="Join Asterism and start organizing your favorite links. Sign up quickly and securely."
+      />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}

@@ -10,6 +10,10 @@ export function Home() {
 
   return (
     <div className="min-h-screen">
+      <meta
+        name="description"
+        content="Manage and organize your favorite links in categories and add tags. Discover a new way to bookmark the web."
+      />
       <Header />
       <img
         src={et3DWithStars}
