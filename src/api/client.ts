@@ -25,7 +25,7 @@ api.interceptors.response.use(
 
       try {
         const { data } = await axios.post(
-          `${import.meta.VITE_API_URL}/user/refresh`,
+          `${import.meta.env.VITE_API_URL}/user/refresh`,
           {},
           {
             withCredentials: true,
