@@ -3,7 +3,7 @@ import { Hero } from '@/components/layout/hero';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'react-router';
-import et3DWithStars from '@/assets/et-3d-with-stars.png';
+import et3DWithStars from '@/assets/et-3d-with-stars.webp';
 
 export function Home() {
   const { user } = useAuth();

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { Card } from '@/components/ui/card';
-import et3D from '@/assets/et-3d.png';
+import et3D from '@/assets/et-3d.webp';
 
 import { NavLink } from 'react-router';
 
