@@ -28,7 +28,6 @@ export function UserInfoMenu() {
           <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() => {
-              logout();
               navigate('/favorites');
             }}
           >
