@@ -1,3 +1,5 @@
+import { api } from './client';
+
 export async function login({
   email,
   password,
@@ -5,12 +7,6 @@ export async function login({
   email: string;
   password: string;
 }) {
-  const res = await fetch('http://localhost:3333/user/auth', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ email, password }),
-  });
-  if (!res.ok) throw new Error('Invalid login');
-  return res.json();
+  const response = await api.post('/user/auth', { email, password });
+  return response.data;
 }
