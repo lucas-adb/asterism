@@ -13,6 +13,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SignWrapper } from '@/components/common/sign-wrapper';
+import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
+import { useSign } from '@/hooks/useSign';
+import { useLogin } from '@/hooks/useLogin';
 
 const formSchema = z.object({
   username: z.string().min(2).max(20),
@@ -21,6 +26,11 @@ const formSchema = z.object({
 });
 
 export function SignUpPage() {
+  const { login: authLogin } = useAuth();
+  const login = useLogin();
+  const sign = useSign();
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,8 +40,41 @@ export function SignUpPage() {
     },
   });
 
+  function handleSign(values: z.infer<typeof formSchema>) {
+    sign.mutate(values, {
+      onSuccess: async () => {
+        try {
+          const loginData = await login.mutateAsync({
+            email: values.email,
+            password: values.password,
+          });
+
+          localStorage.setItem('token', loginData.token);
+
+          authLogin(
+            {
+              id: loginData.user.id,
+              username: loginData.user.username,
+              email: loginData.user.email,
+            },
+            loginData.token
+          );
+
+          navigate('/favorites');
+        } catch (error) {
+          console.error(error);
+          toast.error('Error: Can not login after signing');
+        }
+      },
+      onError: (error) => {
+        console.error(error);
+        toast.error('Sign up error');
+      },
+    });
+  }
+
   function handleSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    handleSign(values);
     form.reset();
   }
 
